@@ -59,9 +59,10 @@ module.exports.init = function(server, clientEvents, bs) {
 
         client.emit("connection", bs.options.toJS()); //todo - trim the amount of options sent to clients
 
-        emitter.emit("client:connected", {
-            ua: client.handshake.headers["user-agent"]
-        });
+        emitter.emit("client:connected", client)
+        client.on('disconnect', function(){
+          emitter.emit("client:disconnected", client)
+        })
     }
 
     /**
